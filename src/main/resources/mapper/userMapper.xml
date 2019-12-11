@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springbootdemo.dao.UserDao">
+    <select id="getUsers"  resultType="user">
+        select idUserInfo as id,userName as name ,userAge as age from userinfo
+    </select>
+    <select id="getUserbyID"  parameterType="long" resultType="user">
+        select idUserInfo as id,userName as name ,userAge as age from userinfo where idUserInfo=#{id}
+    </select>
+    <resultMap id="userChoices" type="user">
+        <id property="id" column="idUserInfo"></id>
+        <result property="age" column="userAge"></result>
+        <result property="name" column="userName"></result>
+        <collection property="choiceList" ofType="userchoices">
+            <id property="iduserchoice" column="iduserchoice"></id>
+            <result property="idUserInfo" column="idUserInfo"></result>
+            <result property="choice" column="choice"></result>
+        </collection>
+    </resultMap>
+    <select id="getChoicesByID" resultMap="userChoices">
+        select * from userchoices inner join userinfo on userchoices.idUserInfo=userinfo.idUserInfo where userchoices.idUserInfo=#{id}
+    </select>
+</mapper>
